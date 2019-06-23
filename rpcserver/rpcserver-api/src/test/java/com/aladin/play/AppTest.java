@@ -1,8 +1,8 @@
-package com.aladin.play;
-
-import static org.junit.Assert.assertTrue;
+package test.java.com.aladin.play;
 
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test for simple App.

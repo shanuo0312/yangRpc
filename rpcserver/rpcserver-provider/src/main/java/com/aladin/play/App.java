@@ -1,13 +1,15 @@
 package com.aladin.play;
 
+
 /**
  * Hello world!
  *
  */
-public class App 
-{
+public class App {
+    private static final Integer port = 8080;
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        RpcProxyServer rpcProxyServer = new RpcProxyServer();
+        rpcProxyServer.publisher(port);
     }
 }
