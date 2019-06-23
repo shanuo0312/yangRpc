@@ -10,6 +10,6 @@ public class RpcNetTransport {
     }
 
     public String send() {
-        return null;
+        return "";
     }
 }
