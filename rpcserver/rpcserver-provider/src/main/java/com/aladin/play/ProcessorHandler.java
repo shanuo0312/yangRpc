@@ -6,12 +6,15 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
+import java.util.Map;
 
 public class ProcessorHandler implements Runnable{
     private Socket socket;
+    Map<String, Object> handlerMap;
 
-    public ProcessorHandler(Socket socket) {
+    public ProcessorHandler(Socket socket, Map<String, Object> handlerMap) {
         this.socket = socket;
+        this.handlerMap = handlerMap;
     }
 
 
@@ -23,13 +26,16 @@ public class ProcessorHandler implements Runnable{
             objectInputStream = new ObjectInputStream(socket.getInputStream());
             RpcRequest rpcRequest = (RpcRequest)objectInputStream.readObject();
 
-            Object result = invoke(rpcRequest);
+            Object result = invoke(rpcRequest, handlerMap);
 
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             objectOutputStream.writeObject(result);
             objectOutputStream.flush();
+            System.out.println("end");
 
         } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
             if(objectInputStream != null) {
                 try {
                     objectInputStream.close();
@@ -38,7 +44,7 @@ public class ProcessorHandler implements Runnable{
                 }
             }
 
-            if(objectInputStream != null) {
+            if(objectOutputStream != null) {
                 try {
                     objectOutputStream.close();
                 } catch (IOException ex) {
@@ -48,7 +54,7 @@ public class ProcessorHandler implements Runnable{
         }
     }
 
-    private Object invoke(RpcRequest rpcRequest) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    private Object invoke(RpcRequest rpcRequest, Map<String, Object> handlerMap) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         Object[] args = rpcRequest.getParameters();
         Class<?>[] types = new Class[args.length];
         for(int i = 0; i < args.length; i++) {
@@ -56,7 +62,11 @@ public class ProcessorHandler implements Runnable{
         }
         Class clazz = Class.forName(rpcRequest.getClassName());
         Method method = clazz.getMethod(rpcRequest.getMethodName(), types);
-        Object object = method.invoke(clazz.newInstance(), args);
+        Object bean = handlerMap.get(rpcRequest.getClassName());
+        if(bean == null) {
+            throw new RuntimeException("service not exist: " + rpcRequest.getClassName());
+        }
+        Object object = method.invoke(bean, args);
         return object;
     }
 }

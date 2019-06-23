@@ -3,5 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/rpcclient" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rpcserver" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rpcserver/rpcserver-api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rpcserver/rpcserver-provider" charset="UTF-8" />
   </component>
 </project>

@@ -8,7 +8,10 @@
       <list>
         <option value="$PROJECT_DIR$/rpcserver/pom.xml" />
         <option value="$PROJECT_DIR$/rpcclient/pom.xml" />
+        <option value="$PROJECT_DIR$/rpcserver/rpcserver-provider/pom.xml" />
+        <option value="$PROJECT_DIR$/rpcserver/rpcserver-api/pom.xml" />
       </list>
     </option>
   </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_12" default="false" project-jdk-name="1.8_211" project-jdk-type="JavaSDK" />
 </project>
